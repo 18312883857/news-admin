@@ -30,7 +30,11 @@
         <template slot-scope="scope">
           <!-- scope.$index,是表格每一项的索引值 scope.row 是表单的内容 -->
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button
+            size="mini"
+            :type="scope.row.open===0?'success':'danger'"
+            @click="handleDelete(scope.$index, scope.row)"
+          >{{scope.row.open === 0?'打开':'关闭'}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -71,7 +75,6 @@ export default {
       url: `/post?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}`
     }).then(res => {
       let { data } = res.data;
-      console.log(data);
       this.tableData = data;
     });
   },
@@ -85,6 +88,16 @@ export default {
     handleDelete(index, row) {
       // 参数分别是每一项的索引值和每一项的内容
       console.log(index, row);
+      this.$axios({
+        url: '/post_update/'+ row.id,
+        method: "post",
+        headers: {
+          Authorization: JSON.parse(localStorage.getItem("userdata") || `{}`).token
+        },
+        data: { open: row.open === 1 ? 0 : 1 }
+      }).then(res => {
+        this.getEnevlments();
+      });
     },
     getEnevlments() {
       this.$axios({
@@ -99,13 +112,13 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.pageSize = val;
-      this.getEnevlments()
+      this.getEnevlments();
     },
     // 当前页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.pageIndex = val
-      this.getEnevlments()
+      this.pageIndex = val;
+      this.getEnevlments();
     }
   }
 };
