@@ -1,29 +1,31 @@
 <template>
   <div>
-    <!-- 面包屑 -->
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/Postlist' }">文章管理</el-breadcrumb-item>
-      <el-breadcrumb-item>文章列表</el-breadcrumb-item>
-    </el-breadcrumb>
     <!-- 内容表单 -->
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column label="日期" width="180">
+      <el-table-column label="序号" width="80">
         <template slot-scope="scope">
-          <i class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ scope.row.date }}</span>
+          <span style="margin-left: 10px">{{ scope.$index+1}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="姓名" width="180">
+      
+      <el-table-column label="标题" width="300">
         <template slot-scope="scope">
-          <el-popover trigger="hover" placement="top">
-            <p>姓名: {{ scope.row.name }}</p>
-            <p>住址: {{ scope.row.address }}</p>
-            <div slot="reference" class="name-wrapper">
-              <el-tag size="medium">{{ scope.row.name }}</el-tag>
-            </div>
-          </el-popover>
+          <span style="margin-left: 10px">{{ scope.row.title}}</span>
         </template>
       </el-table-column>
+
+      <el-table-column label="显示" width="180">
+        <template slot-scope="scope">
+          <span>{{scope.row.open === 1?'打开':'关闭'}}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="类型" width="180">
+        <template slot-scope="scope">
+          <span>{{scope.row.type === 1?'文章':'视频'}}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="操作">
         <template slot-scope="scope">
           <!-- scope.$index,是表格每一项的索引值 scope.row 是表单的内容 -->
@@ -51,33 +53,23 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
+      tableData: [],
       currentPage1: 5,
       currentPage2: 5,
       currentPage3: 5,
-      currentPage4: 4
+      currentPage4: 4,
+      pageIndex: 1,
+      pageSize: 5
     };
+  },
+  mounted(){
+    this.$axios({
+      url : `/post?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}`,
+    }).then(res=>{
+      let {data} = res.data
+      console.log(data)
+      this.tableData = data
+    })
   },
   methods: {
     // 编辑按钮

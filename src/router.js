@@ -12,9 +12,9 @@ export default new Router({
   mode: 'history',
   routes: [
     {path:'/login',component:Login},
-    {path:'/',component:Index,children:[
-      {path:'Postlist',component:Postlist},
-      {path:'Posttext',component:Posttext}
+    {path:'/', meta : '首页' ,component:Index,children:[
+      {path:'Postlist',component:Postlist,meta:'文章列表'},
+      {path:'Posttext',component:Posttext,meta:'发布文章'}
     ]}
   ]
 })

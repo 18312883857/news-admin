@@ -37,6 +37,7 @@
         <!-- 这是子页面要展示的区域 -->
         <el-main>
           <!-- 子组件展示的内容 -->
+          <div class="breaks">{{breaks}}</div>
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -55,8 +56,17 @@ export default {
   },
   mounted() {
     this.list = JSON.parse(localStorage.getItem("userdata"));
-    console.log(this.list);
-  }
+  },
+  computed:{
+    breaks(){
+      const {matched} = this.$route
+      let arr = []
+      matched.forEach(item=>{
+        arr.push(item.meta)
+      })
+      return arr.join('/')
+    }
+  },
 };
 </script>
 
@@ -108,6 +118,9 @@ export default {
   color: #333;
   text-align: center;
 //   line-height: 160px;
+.breaks{
+  text-align: left;
+}
 }
 
 .container {
