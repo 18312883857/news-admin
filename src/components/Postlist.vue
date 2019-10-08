@@ -7,7 +7,7 @@
           <span style="margin-left: 10px">{{ scope.$index+1}}</span>
         </template>
       </el-table-column>
-      
+
       <el-table-column label="标题" width="300">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.title}}</span>
@@ -36,14 +36,21 @@
     </el-table>
     <!-- 分页器 -->
     <div class="block">
+      <!-- size-change：条数切换时候触发的函数
+      current-change：当前页数切换时候触发的函数
+      current-page：当前的页数
+      page-sizes：页面条数的列表
+      page-size: 当前页面的条数
+      layout：布局列表，默认就行
+      total：全部的条数-->
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="pageIndex"
+        :page-sizes="[5,10,15]"
+        :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="total"
       ></el-pagination>
     </div>
   </div>
@@ -54,22 +61,19 @@ export default {
   data() {
     return {
       tableData: [],
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
       pageIndex: 1,
-      pageSize: 5
+      pageSize: 5,
+      total: 15
     };
   },
-  mounted(){
+  mounted() {
     this.$axios({
-      url : `/post?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}`,
-    }).then(res=>{
-      let {data} = res.data
-      console.log(data)
-      this.tableData = data
-    })
+      url: `/post?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}`
+    }).then(res => {
+      let { data } = res.data;
+      console.log(data);
+      this.tableData = data;
+    });
   },
   methods: {
     // 编辑按钮
@@ -82,22 +86,36 @@ export default {
       // 参数分别是每一项的索引值和每一项的内容
       console.log(index, row);
     },
+    getEnevlments() {
+      this.$axios({
+        url: `/post?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}`
+      }).then(res => {
+        let { data } = res.data;
+        this.tableData = data;
+      });
+    },
     // 分页器
+    // 当前页的条数
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+      this.pageSize = val;
+      this.getEnevlments()
     },
+    // 当前页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.pageIndex = val
+      this.getEnevlments()
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
-.el-table{
+.el-table {
   padding: 20px;
 }
-.block{
+.block {
   margin: 20px;
   border: 1px #ffffff solid;
   background: #ffffff;
