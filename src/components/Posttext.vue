@@ -35,7 +35,7 @@
           on-success： 图片上传成功的函数
         on-remove: 移除图片函数-->
         <el-upload
-          action="http://localhost:3000/upload"
+          :action="`${$axios.defaults.baseURL}/upload`"
           list-type="picture-card"
           :on-success="handlePictureCardPreview"
           :on-remove="handleRemove"
@@ -52,7 +52,7 @@
           on-success： 图片上传成功的函数
         on-remove: 移除图片函数-->
         <el-upload
-          action="http://localhost:3000/upload"
+          :action="`${$axios.defaults.baseURL}/upload`"
           list-type="picture-card"
           :on-success="handlePictureCardPreview"
           :on-remove="handleRemove"
@@ -92,7 +92,7 @@ export default {
       config: {
         // 上传图片的配置
         uploadImage: {
-          url: "http://localhost:3000/upload",
+          url: this.$axios.defaults.baseURL+"/upload",
           name: "file",
           headers: {
           Authorization: JSON.parse(localStorage.getItem("userdata") || `{}`).token
@@ -100,16 +100,16 @@ export default {
           // res是结果，insert方法会把内容注入到编辑器中，res.data.url是资源地址
           uploadSuccess : (res, insert)=> {
             console.log(res)
-            insert("http://localhost:3000" + res.data.data.url);
+            insert(this.$axios.defaults.baseURL + res.data.data.url);
           }
         },
 
         // 上传视频的配置
         uploadVideo: {
-          url: "http://localhost:3000/upload",
+          url: this.$axios.defaults.baseURL+ "/upload",
           name: "file",
           uploadSuccess(res, insert) {
-            insert("http://localhost:3000" + res.data.url);
+            insert(this.$axios.defaults.baseURL + res.data.url);
           }
         }
       }
