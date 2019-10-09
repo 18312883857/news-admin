@@ -32,7 +32,7 @@
         <el-header>
           <img :src="$axios.defaults.baseURL + list.user.head_img" alt />
           <span>{{list.user.nickname}}</span>
-          <em>退出</em>
+          <em style="cursor:pointer">退出</em>
         </el-header>
         <!-- 这是子页面要展示的区域 -->
         <el-main>

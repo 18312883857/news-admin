@@ -64,10 +64,11 @@
 export default {
   data() {
     return {
+      // 栏目列表
       tableData: [],
       pageIndex: 1,
       pageSize: 5,
-      total: 15
+      total: 100
     };
   },
   mounted() {
@@ -94,6 +95,7 @@ export default {
         headers: {
           Authorization: JSON.parse(localStorage.getItem("userdata") || `{}`).token
         },
+        // open等于0关闭 open等于1打开
         data: { open: row.open === 1 ? 0 : 1 }
       }).then(res => {
         this.getEnevlments();
