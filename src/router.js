@@ -6,6 +6,7 @@ import Index from './views/index.vue'
 // 引入子组件
 import Postlist from './components/Postlist.vue'
 import Posttext from './components/Posttext.vue'
+import PostEdit from './components/PostEdit.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -14,7 +15,8 @@ export default new Router({
     {path:'/login',component:Login},
     {path:'/', meta : '首页' ,component:Index,children:[
       {path:'Postlist',component:Postlist,meta:'文章列表'},
-      {path:'Posttext',component:Posttext,meta:'发布文章'}
+      {path:'Posttext',component:Posttext,meta:'发布文章'},
+      {path:'PostEdit/:id',component:PostEdit,meta:'编辑文章'}
     ]}
   ]
 })

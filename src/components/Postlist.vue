@@ -83,7 +83,9 @@ export default {
     // 编辑按钮
     handleEdit(index, row) {
       // 参数分别是每一项的索引值和每一项的内容
-      console.log(index, row);
+      // console.log(index, row);
+      // 跳转到编辑页
+      this.$router.push('/PostEdit/'+row.id)
     },
     // 删除按钮
     handleDelete(index, row) {
