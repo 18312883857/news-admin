@@ -2,7 +2,7 @@
   <div>
     <el-container class="container">
       <el-aside width="200px">
-        <h1>黑马头条</h1>
+        <h1>今日头条</h1>
         <!-- 侧边导航栏 -->
         <el-menu
           default-active="2"
